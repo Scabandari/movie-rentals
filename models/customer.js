@@ -24,6 +24,10 @@ const customerSchema = new Schema({
         required: true,
         default: Date.now()
     },
+    balance: {
+        type: Number,
+        default: 0
+    },
     account_active: {
         type: Boolean,
         default: true
