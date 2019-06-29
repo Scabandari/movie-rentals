@@ -1,43 +1,22 @@
 const express = require('express');
 const Customer = require('../models/customer');
 const router = express.Router();
-require('mongoose');
+const customer_controller = require('../controllers/customerController');
+//require('mongoose');
 
+// GET list of all Customers
+router.get('/', customer_controller.customer_list);
 
-router.get('/', async (req, res) => {
-    const customers = await Customer.find({});
-    //console.log(customers);
-    if(customers) {
-        res.status(200).send(customers);
-    } else {
-        res.status(404).send({"Error msg": "No customers found"});
-    }
-    //res.json("working");
-});
+// GET details of one customer by their _id
+router.get('/:customerId', customer_controller.customer_detail);
 
-router.get('/:customerId', async (req, res) => {
-    const { customerId } = req.params;
-    const customer = await Customer.findById(customerId);
-    if(customer) {
-        res.status(200).send(customer);
-    } else {
-        res.status(404).send({"Error msg": `No Customer instances found with id: ${customerId}`});
-    }
-});
+// POST create a new Customer instance
+router.post('/create', customer_controller.customer_create);
 
-router.post('/', async (req, res) => {
-    // console.log(`req.body: ${JSON.stringify(req.body)}`);
-    // console.log(`req.query: ${JSON.stringify(req.query)}`);
+// DELETE a Customer instance by _id
+router.delete('/:customerId/delete', customer_controller.customer_delete);
 
-    try {
-        //const { first_name, last_name, phone, email } = req.body
-        const customer = new Customer(req.query);
-        await customer.save();
-        res.status(200).send(customer);
-    } catch(err) {
-        res.status(400).send({"Error msg": "Could not create Customer instance"})
-    }
-});
+router.put('/:customerId/update', customer_controller.customer_update);
 
 
 module.exports = router;
