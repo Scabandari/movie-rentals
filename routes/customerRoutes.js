@@ -18,5 +18,6 @@ router.delete('/:customerId/delete', customer_controller.customer_delete);
 
 router.put('/:customerId/update', customer_controller.customer_update);
 
+router.patch('/:customerId/patch', customer_controller.customer_patch);
 
 module.exports = router;

@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const keys = require('./config/keys');
 
 mongoose.Promise = global.Promise;
-mongoose.connect(keys.mongoURI);
+mongoose.connect(keys.mongoURI, { useFindAndModify: false });
 
 const app = express();
 
@@ -34,3 +34,5 @@ const port = 4000;
 app.listen(port, () => {
     console.log(`NodeJs server running on port ${port}`);
 });
+
+module.exports = app;

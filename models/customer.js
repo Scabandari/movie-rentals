@@ -35,5 +35,10 @@ const customerSchema = new Schema({
     end_date: Date
 });
 
+customerSchema.methods.addToBalance = async function(amount) {
+    this.balance  += Number(amount);
+    await this.save();
+};
+
 module.exports = mongoose.model('Customer', customerSchema);
 
