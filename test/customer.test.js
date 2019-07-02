@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 // import chai from 'chai';
 // import chaiHttp from 'chai-http';
 const app = require('../index');
@@ -22,7 +22,9 @@ const customer_properties = [
     'account_active'
 ];
 
-let customer_id = '';
+//let customer_id = '';
+let temp_cust = {};
+
 
 // Configure chai
 chai.use(chaiHttp);
@@ -91,7 +93,9 @@ describe("Testing customers Routes/Controller", () => {
                         expect(res.body).haveOwnProperty(prop);
                         //expect(res.body).have.property(prop);
                     });
-                    customer_id = res.body._id;
+                    temp_cust.id = res.body._id;
+                    // const customer = Customer.findById(temp_cust.id);
+                    // expect(customer).equals(false);
                     done();
                 });
         });
@@ -118,7 +122,7 @@ describe("Testing customers Routes/Controller", () => {
                 account_active = true;
 
             chai.request(app)
-                .put(`/customers/${customer_id}/update?first_name=${first_name}` +
+                .put(`/customers/${temp_cust.id}/update?first_name=${first_name}` +
                     `&last_name=${last_name}&email=${email}&phone=${phone}` +
                     `&balance=${balance}&account_active=${account_active}`)
                 .end((err, res) => {
@@ -131,17 +135,46 @@ describe("Testing customers Routes/Controller", () => {
                    expect(body.balance).to.equal(balance);
                    expect(body.account_active).to.equal(account_active);
                    expect(body).to.have.property('start_date');
+                   temp_cust.balance = res.body.balance;
                    done();
                 });
         });
     });
 
+    describe("PATCH", () => {
+        it("It should increase the customer's balance by the given amount", (done) => {
+            const amount = 2;
+            chai.request(app)
+                .patch(`/customers/${temp_cust.id}/patch?amount=${amount}`)
+                .end((err, res) => {
+                    res.should.have.status(200);
+                    expect(res.body.balance).to.equal(temp_cust.balance + amount);
+                    done();
+                });
+        });
+
+        it("It should not increase the customer's balance given a letter instead of a number", (done) => {
+            const amount = 'A';
+            chai.request(app)
+                .patch(`/customers/${temp_cust.id}/patch?amount=${amount}`)
+                .end((err, res) => {
+                    res.should.have.status(500);
+                    done();
+                });
+        });
+    });
+
+
+
     describe("DELETE", () => {
         it("should delete an instance of Customer given a correct _id", (done) => {
             chai.request(app)
-                .delete(`/customers/${customer_id}/delete`)
+                .delete(`/customers/${temp_cust.id}/delete`)
                 .end((err, res) => {
                     res.should.have.status(200);
+                    // TODO find a way to verify the non existence. Below doesn't work
+                    // const customer = Customer.findById(temp_cust.id);
+                    // expect(customer).equals(null);
                     done();
                 });
         });

@@ -86,3 +86,21 @@ exports.customer_update = async (req, res) => {
     }
 
 };
+
+exports.customer_patch = async (req, res) => {
+    const { customerId } = req.params;
+    // TODO would this code or my other controllers look cleaner using promises instead of async await
+    // TODO maybe a combo of both
+    try {
+        //console.log(`req.query: ${JSON.stringify(req.query)}`);
+        const customer = await Customer.findById(customerId);
+        customer.addToBalance(req.query.amount);
+        //await customer.save()
+
+        res.status(200).json(customer);
+    } catch(err) {
+        res.status(500).json({
+            "Error msg": `Could not patch Customer instance with id ${customerId}`,
+            "err": err});
+    }
+};
