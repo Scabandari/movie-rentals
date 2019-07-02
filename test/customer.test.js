@@ -43,7 +43,7 @@ describe("Testing customers Routes/Controller", () => {
         it("should get a single customer instance", (done) => {
             const id = '5d1792f46c6634681776fda9';
             chai.request(app)
-                .get(`/customers/${id}`)
+                .get(`/customers/${id}/detail`)
                 .end((err, res) => {
                     res.should.have.status(200);
                     res.body.should.be.a('object');
@@ -58,7 +58,7 @@ describe("Testing customers Routes/Controller", () => {
         it("should not get a single customer instance", (done) => {
             const id = '5d1792f46c6634681776fda5';  // incorrect _id
             chai.request(app)
-                .get(`/customers/${id}`)
+                .get(`/customers/${id}/detail`)
                 .end((err, res) => {
                     res.should.have.status(404);
                     done();
@@ -68,7 +68,7 @@ describe("Testing customers Routes/Controller", () => {
         it("should not get a single customer instance", (done) => {
             const id = '5';  // won't be cast as an _id at all
             chai.request(app)
-                .get(`/customers/${id}`)
+                .get(`/customers/${id}/detail`)
                 .end((err, res) => {
                     res.should.have.status(400);
                     done();

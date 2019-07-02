@@ -43,6 +43,8 @@ exports.customer_detail = async (req, res) => {
     try {
         const customer = await Customer.findById(customerId);
         if(customer) {
+            // Demo virtual property fullName works
+            console.log(`fullName for Customer instance: ${customer.fullName}`);
             res.status(200).json(customer);
         } else {
             res.status(404).json({"Error msg": `No Customer instances found with id: ${customerId}`});
@@ -94,13 +96,23 @@ exports.customer_patch = async (req, res) => {
     try {
         //console.log(`req.query: ${JSON.stringify(req.query)}`);
         const customer = await Customer.findById(customerId);
-        customer.addToBalance(req.query.amount);
+        try {
+            await customer.addToBalance(req.query.amount);
+            res.status(200).json(customer);
+        } catch(err) {
+            res.status(500).json({
+                "Error msg": `Could not patch Customer instance with id ${customerId}`,
+                "err": err});
+        }
         //await customer.save()
 
-        res.status(200).json(customer);
     } catch(err) {
         res.status(500).json({
             "Error msg": `Could not patch Customer instance with id ${customerId}`,
             "err": err});
     }
+
+    ///////////////////////////////////////////////////////////////////////////
+    
+
 };
