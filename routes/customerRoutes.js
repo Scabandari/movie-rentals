@@ -8,7 +8,7 @@ const customer_controller = require('../controllers/customerController');
 router.get('/', customer_controller.customer_list);
 
 // GET details of one customer by their _id
-router.get('/:customerId', customer_controller.customer_detail);
+router.get('/:customerId/detail', customer_controller.customer_detail);
 
 // POST create a new Customer instance
 router.post('/create', customer_controller.customer_create);

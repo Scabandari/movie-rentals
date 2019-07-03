@@ -40,5 +40,11 @@ customerSchema.methods.addToBalance = async function(amount) {
     await this.save();
 };
 
+
+// ref: https://mongoosejs.com/docs/guide.html#virtuals
+customerSchema.virtual('fullName').get(function() {
+    return this.first_name + ' ' + this.last_name;
+});
+
 module.exports = mongoose.model('Customer', customerSchema);
 
