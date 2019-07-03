@@ -1,6 +1,6 @@
-const express = require('express');
-const Schema = express.Schema;
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+
 
 const movieSchema = new Schema({
     title : {
@@ -23,7 +23,16 @@ const movieSchema = new Schema({
     },
     genre: {
         type: String,
-        enum: ['Fantasy', 'Comedy', 'Sci-Fi', 'Documentary', 'Thriller', 'Suspense', 'Action', 'Horror']
+        enum: [
+            'Fantasy',
+            'Comedy',
+            'Sci-Fi',
+            'Documentary',
+            'Thriller',
+            'Suspense',
+            'Action',
+            'Horror'
+        ]
     },
     length: Number  // Minutes
 });
