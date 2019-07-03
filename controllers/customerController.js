@@ -4,9 +4,9 @@ exports.customer_list = async (req, res) => {
     const customers = await Customer.find({});
     //console.log(customers);
     if(customers.length > 0) {
-        res.status(200).json(customers);
+        res.status(200).send(customers);
     } else {
-        res.status(404).json({"Error msg": "No customers found"});
+        res.status(406).json({"Error msg": "No customers found"});
     }
     //res.json("working");
 };
@@ -104,15 +104,10 @@ exports.customer_patch = async (req, res) => {
                 "Error msg": `Could not patch Customer instance with id ${customerId}`,
                 "err": err});
         }
-        //await customer.save()
 
     } catch(err) {
         res.status(500).json({
             "Error msg": `Could not patch Customer instance with id ${customerId}`,
             "err": err});
     }
-
-    ///////////////////////////////////////////////////////////////////////////
-    
-
 };
